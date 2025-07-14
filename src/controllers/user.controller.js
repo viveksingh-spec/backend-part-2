@@ -24,15 +24,19 @@ const regiterUser = asynchandler(async(req,res)=>{
         throw new ApiError(400,"all feild are required")
     }
     // checking if user already exist or nat
-   const existedUser =  User.findOne({
+   const existedUser = await User.findOne({
         $or : [{username},{email}]
     })
     if(existedUser){
         throw new ApiError(409,"user is already existed with this name or email")
     }
+
+    console.log(req.files)
+    console.log(req.body)
     // taking image from multer
     const avatarLocalpath = req.files?.avatar[0]?.path;
     const coverimageLocalpath = req.files?.coverimage[0]?.path;
+    
     if(!avatarLocalpath){
          throw new ApiError(400,"avatar file is required");
     }
@@ -53,7 +57,7 @@ const regiterUser = asynchandler(async(req,res)=>{
         username:username.toLowerCase()
     })
 
-   const is_created_user = User.findById(user._id).select(
+   const is_created_user = await User.findById(user._id).select(
        "-password -refreshToken"
    )
    if(!is_created_user){
