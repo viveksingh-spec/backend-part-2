@@ -7,6 +7,7 @@ class ApiResponse{
          this.statusCode = statusCode
          this.massage = massage
          this.data = data
-         this.success =statusCode
+         this.success =statusCode <400
      }
 }
+export {ApiResponse}
